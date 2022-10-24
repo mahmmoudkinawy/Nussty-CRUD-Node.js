@@ -1,22 +1,21 @@
 const Joi = require("joi");
 const express = require("express");
+
 const app = express();
 
 app.use(express.json());
 
-const baseApiRoute = "/api";
-
 const movies = [
-  { id: 1, name: "Anaconda" },
-  { id: 2, name: "Jems Bond" },
-  { id: 3, name: "Rambo" },
+  { id: 1, name: "Anaconda from docker" },
+  { id: 2, name: "Jems Bond from docker" },
+  { id: 3, name: "Rambo from docker" },
 ];
 
-app.get(`${baseApiRoute}/movies`, (req, res) => {
+app.get(`/api/movies`, (req, res) => {
   res.status(200).send(movies);
 });
 
-app.get(`${baseApiRoute}/movies/:id`, (req, res) => {
+app.get(`/api/movies/:id`, (req, res) => {
   const movie = movies.find((m) => m.id === +req.params.id);
   if (!movie)
     return res.status(404).send("The Movie with the given Id was not found");
@@ -24,7 +23,7 @@ app.get(`${baseApiRoute}/movies/:id`, (req, res) => {
   res.status(200).send(movie);
 });
 
-app.post(`${baseApiRoute}/movies`, (req, res) => {
+app.post(`/api/movies`, (req, res) => {
   const movie = {
     id: movies.length + 1,
     name: req.body.name,
@@ -38,7 +37,7 @@ app.post(`${baseApiRoute}/movies`, (req, res) => {
   res.status(200).send(movie);
 });
 
-app.put(`${baseApiRoute}/movies/:id`, (req, res) => {
+app.put(`/api/movies/:id`, (req, res) => {
   const movie = movies.find((m) => m.id === +req.params.id);
   if (!movie) return res.status(404).send("The film not found");
 
@@ -58,7 +57,7 @@ function validateJoi(movie) {
   return Joi.validate(movie, schema);
 }
 
-app.delete(`${baseApiRoute}/movies/:id`, (req, res) => {
+app.delete(`/api/movies/:id`, (req, res) => {
   const movie = movies.find((m) => m.id === +req.params.id);
   if (!movie) return res.status(404).send("The film not found");
 
